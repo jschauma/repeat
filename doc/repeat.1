@@ -1,0 +1,116 @@
+.\" Originally written by Jan Schaumann <jschauma@netmeister.org> in March 2022.
+.Dd March 04, 2022
+.Dt repeat 1
+.Os
+.Sh NAME
+.Nm repeat
+.Nd execute the given command repeatedly
+.Sh SYNOPSIS
+.Nm
+.Op Fl dhv
+.Op Fl J Ar replstr
+.Op Fl n Ar num
+.Op Fl s Ar sleep
+.Ar command Op Ar argument ...
+.Sh DESCRIPTION
+.Nm
+invokes the given command, over and over,
+forever or a given number of times.
+.Sh OPTIONS
+The following options are supported by
+.Nm :
+.Bl -tag -width j_replstr_
+.It Fl J Ar replstr
+When constructing the command to execute, replace the
+occurence of
+.Ar replstr
+with the integer representing the number of invocation
+performed.
+.It Fl d
+Don't wait for the command to complete before invoking
+it again.
+Passing this flag also sets
+.Fl s
+to zero.
+.It Fl h
+Display help and exit.
+.It Fl n Ar num
+Only repeat the given command
+.Ar num
+times.
+.It Fl s Ar sleep
+Sleep for
+.Ar sleep
+seconds in between invocations.
+.Pp
+If not specified,
+.Nm
+will repeat the given command as quickly as possible.
+.Pp
+Setting this option also disables
+.Fl d .
+.It Fl v
+Verbose mode: prefix the output of each invocation of
+the given command with a zero-padded number of the
+iteration ("<n>: <output>").
+.El
+.Sh EXAMPLES
+The following examples illustrate common usage of this tool.
+.Pp
+To run the
+.Xr date 1
+command 30 times in succession in one-minute
+intervals:
+.Bd -literal -offset indent
+repeat -n 30 -s 60 date
+.Ed
+.Pp
+In order to repeat complex commands including e.g.,
+I/O redirection and pipelines, you can pass a
+.Xr sh 1
+command to
+.Nm .
+For example, to continuously count the number of files
+in the current directory:
+.Bd -literal -offset indent
+repeat /bin/sh -c "ls | wc -l"
+.Ed
+.Pp
+.Nm
+will repeatedly invoke the given
+.Ar utility
+with any subsequent arguments.
+If the
+.Fl J
+flag is specified, then the given
+.Ar replstr
+in any of the arguments (including the utility itself)
+will be replaced with the number of the invocation.
+.Pp
+Since I/O redirection is processed by the invoking
+shell, you'd have to invoke a new shell to allow for
+redirection to e.g. a per-invocation output file.
+.Pp
+For example, to redirect input and output of 10
+repeated invocations:
+.Bd -literal -offset indent
+repeat -n 10 -J % /bin/sh -c "<%.in command >%.out"
+.Ed
+.Sh EXIT STATUS
+The
+.Nm
+command exits with the exit status of the last command
+it invoked.
+.Sh SEE ALSO
+.Xr jot 1 ,
+.Xr seq 1 ,
+.Xr xargs 1 ,
+.Xr yes 1
+.Sh HISTORY
+.Nm
+was originally written by
+.An Jan Schaumann
+.Aq jschauma@netmeister.org
+in March 2022.
+.Sh BUGS
+Please file bugs and feature requests by emailing the author.
