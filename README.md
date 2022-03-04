@@ -31,6 +31,7 @@ was tested and confirmed to build on:
 - NetBSD 8.0
 - macOS 12.2.1
 - RHEL 7.9
+- OmniOS r151034
 
 If you run into build/test issues, please [email
 me](mailto:jschauma@netmeister.org).
