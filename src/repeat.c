@@ -68,7 +68,7 @@ main(int argc, char **argv) {
 	int ch;
 
 	/* GNU getopt(3) needs '+' to enable POSIXLY_CORRECT behavior. */
-	while ((ch = getopt(argc, argv, "+Jdhn:s:v")) != -1) {
+	while ((ch = getopt(argc, argv, "+J:dhn:s:v")) != -1) {
 		switch(ch) {
 		case 'J':
 			JFlag = 1;
