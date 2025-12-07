@@ -34,7 +34,9 @@ man: doc/${NAME}.1.txt
 doc/${NAME}.1.txt: doc/${NAME}.1
 	mandoc -c -O width=80 $? | col -b >$@
 
-readme: man
+readme: README.md
+
+README.md: doc/${NAME}.1.txt
 	sed -n -e '/^NAME/!p;//q' README.md >.readme
 	sed -n -e '/^NAME/,$$p' -e '/emailing/q' doc/${NAME}.1.txt >>.readme
 	echo '```' >>.readme
